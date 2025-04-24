@@ -1,0 +1,14 @@
+spring:
+  profiles:
+    active: dev
+
+bitcoin:
+  network: testnet
+
+server:
+  port: 8080
+
+logging:
+  level:
+    root: INFO
+    com.mcd.wallet: DEBUG

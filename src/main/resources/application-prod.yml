@@ -1,0 +1,10 @@
+bitcoin:
+  network: mainnet
+
+server:
+  port: 8080
+
+logging:
+  level:
+    root: WARN
+    com.mcd.wallet: INFO
