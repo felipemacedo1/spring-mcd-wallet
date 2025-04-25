@@ -32,8 +32,8 @@ This project supports:
 ## Roadmap
 
 - [x] Project setup (Spring Boot + bitcoinj)
-- [ ] Implement mnemonic generation and seed derivation (BIP-39)
-- [ ] Address derivation (BIP-44)
+- [x] Implement mnemonic generation and seed derivation (BIP-39)
+- [x] Address derivation (BIP-44)
 - [ ] Blockchain connection and sync (SPV)
 - [ ] Balance and transaction history endpoints
 - [ ] Transaction signing and broadcasting
