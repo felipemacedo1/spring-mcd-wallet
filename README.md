@@ -59,5 +59,3 @@ This project supports:
 ## License
 
 This project is licensed under the [MIT License](LICENSE)
-
-testing rules
