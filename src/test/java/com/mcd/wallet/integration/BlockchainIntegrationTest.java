@@ -6,10 +6,14 @@ import org.bitcoinj.wallet.Wallet;
 import org.bitcoinj.kits.WalletAppKit;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.AfterEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import java.time.Duration;
+import java.util.concurrent.TimeUnit;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.awaitility.Awaitility.await;
 
 @Tag("integration")
 @SpringBootTest
@@ -19,21 +23,28 @@ class BlockchainIntegrationTest {
     private BlockchainService blockchainService;
 
     @Test
-    void shouldConnectToPeersAndStartSync() throws InterruptedException {
-        // Aguarda alguns segundos para conectar com peers (configurável)
-        Thread.sleep(10_000); // 10 segundos pra dar tempo de conectar
-
+    void shouldConnectToPeersAndStartSync() {
         WalletAppKit kit = blockchainService.getWalletAppKit();
+
+        await()
+                .atMost(Duration.ofSeconds(30))
+                .pollInterval(Duration.ofSeconds(1))
+                .until(() -> kit.peerGroup().numConnectedPeers() > 0);
+
         PeerGroup peerGroup = kit.peerGroup();
         Wallet wallet = kit.wallet();
 
-        // Verifica se tem peers conectados
         int connectedPeers = peerGroup.numConnectedPeers();
         System.out.println("Peers conectados: " + connectedPeers);
-
         assertThat(connectedPeers).isGreaterThan(0);
-
-        // Verifica se a wallet foi inicializada corretamente
         assertThat(wallet).isNotNull();
+    }
+
+    @AfterEach
+    void cleanup() {
+        WalletAppKit kit = blockchainService.getWalletAppKit();
+        if (kit != null && kit.isRunning()) {
+            kit.peerGroup().stop();
+        }
     }
 }
