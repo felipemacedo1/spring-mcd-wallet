@@ -1,4 +1,4 @@
 package com.mcd.wallet.controller.dto;
 
-public class TransactionResponse {
+public record TransactionResponse(String txId, String amount) {
 }

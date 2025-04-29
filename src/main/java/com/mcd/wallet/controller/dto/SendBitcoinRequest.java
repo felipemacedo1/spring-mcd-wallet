@@ -1,4 +1,4 @@
 package com.mcd.wallet.controller.dto;
 
-public class SendBitcoinRequest {
+public record SendBitcoinRequest(String address, String amount) {
 }
