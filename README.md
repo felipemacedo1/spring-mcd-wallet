@@ -44,8 +44,6 @@ This project supports:
 
 To set up and run the project locally (including Bitcoin regtest configuration), check out the [Getting Started Guide](docs/GETTING_STARTED.md).
 
----
-
 ## License
 
 This project is licensed under the [MIT License](LICENSE)
