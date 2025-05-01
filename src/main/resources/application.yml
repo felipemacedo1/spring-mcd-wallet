@@ -1,4 +1,6 @@
 spring:
+  application:
+    name: spring-mcd-wallet
   profiles:
     active: dev
 
