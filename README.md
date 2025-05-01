@@ -29,19 +29,6 @@ This project supports:
 
 ---
 
-## Roadmap
-
-- [x] Project setup (Spring Boot + bitcoinj)
-- [x] Implement mnemonic generation and seed derivation (BIP-39)
-- [x] Address derivation (BIP-44)
-- [x] Blockchain connection and sync (SPV)
-- [x] Balance and transaction history endpoints
-- [ ] Transaction signing and broadcasting (testing phase)
-- [ ] Secure storage with AES encryption
-- [ ] JavaFX/CLI interface
-- [ ] Mainnet support
-- [ ] Offline-first validation
-- [ ] Documentation with Swagger/OpenAPI
 
 ---
 
