@@ -29,9 +29,6 @@ This project supports:
 
 ---
 
-
----
-
 ## Technologies
 
 - **Java 21**
@@ -40,6 +37,12 @@ This project supports:
 - **JavaFX (optional GUI)**
 - **Lombok**
 - **Spring Security (optional)**
+
+---
+
+## Getting Started
+
+To set up and run the project locally (including Bitcoin regtest configuration), check out the [Getting Started Guide](docs/GETTING_STARTED.md).
 
 ---
 
