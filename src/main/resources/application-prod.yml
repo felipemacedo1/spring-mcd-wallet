@@ -1,0 +1,20 @@
+spring:
+  application:
+    name: spring-mcd-wallet
+  profiles:
+    group:
+      prod:
+        - mainnet
+
+bitcoin:
+  network: mainnet
+  peer-host: dnsseed.bitcoin.dashjr.org  # pode usar peers DNS públicos
+  peer-port: 8333
+
+server:
+  port: 8080
+
+logging:
+  level:
+    root: WARN
+    com.mcd.wallet: INFO

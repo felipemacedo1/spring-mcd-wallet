@@ -1,16 +1,3 @@
 spring:
-  application:
-    name: spring-mcd-wallet
   profiles:
-    active: dev
-
-bitcoin:
-  network: testnet
-
-server:
-  port: 8080
-
-logging:
-  level:
-    root: INFO
-    com.mcd.wallet: DEBUG
+    active: prod

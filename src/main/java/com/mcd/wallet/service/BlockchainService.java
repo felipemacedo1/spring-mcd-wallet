@@ -3,8 +3,10 @@ package com.mcd.wallet.service;
 import org.bitcoinj.core.NetworkParameters;
 import org.bitcoinj.core.listeners.DownloadProgressTracker;
 import org.bitcoinj.kits.WalletAppKit;
+import org.bitcoinj.core.PeerAddress;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
@@ -20,6 +22,12 @@ public class BlockchainService {
     private final NetworkParameters params;
     private WalletAppKit kit;
     private static final Logger log = LoggerFactory.getLogger(BlockchainService.class);
+
+    @Value("${bitcoin.peer-host:127.0.0.1}")
+    private String peerHost;
+
+    @Value("${bitcoin.peer-port:18444}")
+    private int peerPort;
 
     public BlockchainService(NetworkParameters params) {
         this.params = params;
@@ -40,6 +48,17 @@ public class BlockchainService {
             }
         };
 
+        // Conexão manual com o bitcoind local (necessário para RegTest)
+        if (params.getId().equals(NetworkParameters.ID_REGTEST)) {
+            try {
+                log.info("Conectando manualmente ao bitcoind local (RegTest): {}:{}", peerHost, peerPort);
+                InetAddress address = InetAddress.getByName(peerHost);
+                kit.setPeerNodes(new PeerAddress(params, address, peerPort));
+            } catch (Exception e) {
+                log.error("Erro ao configurar peer manual para RegTest", e);
+            }
+        }
+
         kit.setBlockingStartup(false);
         kit.startAsync();
         kit.awaitRunning();
@@ -51,7 +70,6 @@ public class BlockchainService {
         log.info("Syncing with Bitcoin {}...", networkName);
         log.info("Wallet data directory: {}", walletDir.getAbsolutePath());
 
-        // Listener de progresso de sincronização
         kit.peerGroup().startBlockChainDownload(new DownloadProgressTracker() {
             @Override
             public void doneDownload() {
@@ -59,22 +77,18 @@ public class BlockchainService {
             }
         });
 
-        // Log de peers conectados
         kit.peerGroup().addConnectedEventListener((peer, peerCount) -> {
             log.info("Connected to peer: {} | Total peers: {}", peer.getAddress(), peerCount);
         });
 
-        // Listener para novos blocos recebidos
         kit.peerGroup().addBlocksDownloadedEventListener((peer, block, filteredBlock, blocksLeft) -> {
             log.info("New block received! Hash: {} | Blocks left: {}", block.getHashAsString(), blocksLeft);
         });
 
-        // Listener para transações recebidas
         kit.wallet().addCoinsReceivedEventListener((wallet, tx, prevBalance, newBalance) -> {
             log.info("Coins received! TX: {} | New balance: {}", tx.getHashAsString(), newBalance.toFriendlyString());
         });
 
-        // Listener para transações enviadas
         kit.wallet().addCoinsSentEventListener((wallet, tx, prevBalance, newBalance) -> {
             log.info("Coins sent! TX: {} | New balance: {}", tx.getHashAsString(), newBalance.toFriendlyString());
         });

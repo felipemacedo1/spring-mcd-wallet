@@ -1,0 +1,18 @@
+spring:
+  application:
+    name: spring-mcd-wallet
+  profiles:
+    active: dev
+
+bitcoin:
+  network: regtest
+  peer-host: 127.0.0.1
+  peer-port: 18444
+
+server:
+  port: 8080
+
+logging:
+  level:
+    root: INFO
+    com.mcd.wallet: DEBUG
